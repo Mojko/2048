@@ -1,10 +1,21 @@
+/**
+ * @brief Implementation of the game 2048
+ *
+ * @author  Marut, Jesper Byström
+ * @since   2019-12-03
+ *
+ */
+
 #include "stdio.h"
 #include <math.h>
 #include "application.h"
 
-static void print_horizontal(void);
-static void print_vertical(int k);
+static int get_score();
 static void print_game();
+static void print_header_line();
+static void print_content(int box1, int box2, int box3, int box4);
+static void print_empty_content_line();
+static void print_menu();
 
 void app_run(void)
 {
@@ -12,247 +23,125 @@ void app_run(void)
 
     print_game();
 
-    char str[2];
+    int selection;
+
     do
     {
-        scanf("%s", str);
-        if(str[0] == 'w')
+        print_menu();
+
+        scanf("%d", &selection);
+
+        printf("\n");
+
+        if(selection == 1)
         {
+            printf("> Sliding up ...\n");
             game_slide_up();
         }
-        if(str[0] == 's')
+
+        else if(selection == 2)
         {
+            printf("> Sliding right ...\n");
+            game_slide_right();
+        }
+
+        else if(selection == 3)
+        {
+            printf("> Sliding down ...\n");
             game_slide_down();
         }
-        if(str[0] == 'a')
+
+        else if(selection == 4)
         {
+            printf("> Sliding left ...\n");
             game_slide_left();
         }
-        if(str[0] == 'd')
+        else
         {
-            game_slide_right();
+            continue;
         }
 
         print_game();
 
-    } while(str[0] != 'x' && !game_is_game_over());
+    } while(selection != 0 && !game_is_game_over());
 
-    if(game_is_game_over())
+    fprintf(stderr, "GAME OVER\nYou got the score: %d\n", get_score());
+}
+
+static int get_score()
+{
+    int score = 0;
+    for(int i = 0; i < BOARD_ROWS; i++)
     {
-        fprintf(stderr, "GAME OVER\n");
+        for(int j = 0; j < BOARD_COLUMNS; j++)
+        {
+            score += game_get_square(i, j);
+        }
     }
+
+    return score;
+}
+
+static void print_menu()
+{
+    printf("SELECT ACTION\n");
+    printf("0: quit\n");
+    printf("1: slide up\n");
+    printf("2: slide right\n");
+    printf("3: slide down\n");
+    printf("4: slide left\n");
+    printf("? ");
 }
 
 static void print_game()
 {
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < BOARD_ROWS; i++)
     {
-        print_horizontal();
-        print_vertical(i);
+        print_header_line();
+        print_empty_content_line();
+        print_content(game_get_square(i, 0), game_get_square(i, 1), game_get_square(i, 2), game_get_square(i, 3));
+        print_empty_content_line();
     }
 
-    print_horizontal();
-    printf("\n\n\n\n\n\n\n\n\n\n");
+    print_header_line();
+    printf("\n\n\n\n");
 }
 
-static void print_horizontal(void)
+static void print_header_line()
 {
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < BOARD_COLUMNS; i++)
     {
-        printf("+");
-        for(int j = 0; j < 8; j++)
-        {
-            printf("-");
-        }
+        printf("+--------");
     }
-    printf("+");
+
+    printf("+\n");
 }
 
-
-static void print_vertical(int k)
+static void print_empty_content_line()
 {
-    int wew = 4;
+    for(int i = 0; i < 5; i++)
+    {
+        printf("|        ");
+    }
+
     printf("\n");
-    int count = 0;
-    int n;
+}
 
-    int l = 0;
+static void print_content(int box1, int box2, int box3, int box4)
+{
+    int boxes[] = {box1, box2, box3, box4};
 
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < BOARD_COLUMNS; i++)
     {
-        if(i == 3)
+        if(boxes[i] == 0)
         {
-            //continue;
+            printf("|        ");
         }
         else
         {
-            for(int j = 0, l = 0; j < 4; j++, l++)
-            {
-                printf("|");
-
-                n = game_get_square(k, l);
-
-                if(i == 1)
-                {
-                    count = 0;
-                    while(n != 0)
-                    {
-                        n /= 10;
-                        ++count;
-                    }
-                    if(game_get_square(k, l) != 0 && count > 0)
-                    {
-                        switch(count)
-                        {
-                                case 1:
-                                    printf("    %d   ", game_get_square(k, l));
-                                    break;
-
-                                case 2:
-                                    printf("   %d   ", game_get_square(k, l));
-                                    break;
-
-                                case 3:
-                                    printf("  %d   ", game_get_square(k, l));
-                                    break;
-
-                                case 4:
-                                    printf(" %d   ", game_get_square(k, l));
-                                    break;
-                                default:
-                                    printf("        ");
-                            }
-                        }
-                    else
-                    {
-                        printf("        ");
-                    }
-                }
-                else
-                {
-                    printf("        ");
-                }
-
-                if(j == 3)
-                {
-
-                    printf("|");
-                }
-
-                //printf("[%d, %d]", k, l);
-            }
-            printf("\n");
+            printf("|%4d    ", boxes[i]);
         }
     }
-    //printf("\n|\t |");
-    /*
-    int k = 0;
-    int l = 0;
-    int count = 0;
-    for(int i = 0; i < 4; i++)
-    {
-        printf("\n");
 
-        for(int j = 0; j < 4; j++)
-        {
-
-            if(j == 3)
-            {
-               // printf("|        ");
-               // printf("|        ");
-
-            }
-            if(i == 1)
-            {
-                if(i == 1)
-            {
-                n = game_get_square(k, l);
-                while(n != 0)
-                {
-
-                    n /= 10;
-                    ++count;
-                }
-                switch(count)
-                {
-                    case 1:
-                        printf("    %d   ", game_get_square(k, l));
-                        break;
-
-                    case 2:
-                        printf("   %d   ", game_get_square(k, l));
-                        break;
-
-                    case 3:
-                        printf("  %d   ", game_get_square(k, l));
-                        break;
-
-                    case 4:
-                        printf(" %d   ", game_get_square(k, l));
-                        break;
-                    default:
-                        printf("       ");
-                }
-            }
-            else
-            {
-                printf("        ");
-            }
-            }
-            else
-            {
-                printf("|        ");
-            }
-            l++;
-        }
-        k++;
-    }*/
-
-
-    /*
-    int n2 = n;
-    int count = 0;
-    for(int i = 0; i < 4; i++)
-    {
-        printf("\n");
-        for(int j = 0; j < 4; j++)
-        {
-            printf("|");
-            if(i == 1 && j != 4)
-            {
-                n = game_get_square(i, j);
-                while(n != 0)
-                {
-
-                    n /= 10;
-                    ++count;
-                }
-                switch(count)
-                {
-                    case 1:
-                        printf("    %d   ", game_get_square(i, j));
-                        break;
-
-                    case 2:
-                        printf("   %d   ", game_get_square(i, j));
-                        break;
-
-                    case 3:
-                        printf("  %d   ", game_get_square(i, j));
-                        break;
-
-                    case 4:
-                        printf(" %d   ", game_get_square(i, j));
-                        break;
-                    default:
-                        printf("       ");
-                }
-            }
-            else
-            {
-                printf("        ");
-            }
-        }
-    }*/
-    //printf("\n|\t |");
+    printf("|\n");
 }

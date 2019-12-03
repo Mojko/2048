@@ -29,3 +29,33 @@
 1575136168 c:\users\mojko\documents\skolarbete\dv1\2048\application.h
 	"game.h"
 
+1575404595 source:c:\users\mojko\documents\github\2048\application.c
+	"stdio.h"
+	<math.h>
+	"application.h"
+
+1575136168 c:\users\mojko\documents\github\2048\application.h
+	"game.h"
+
+1575405713 c:\users\mojko\documents\github\2048\game.h
+	<stdbool.h>
+
+1575023716 source:c:\users\mojko\documents\github\2048\array.c
+	"array.h"
+	<stdlib.h>
+	<stdio.h>
+
+1575023716 c:\users\mojko\documents\github\2048\array.h
+
+1575136228 source:c:\users\mojko\documents\github\2048\main.c
+	<stdio.h>
+	<stdlib.h>
+	"application.h"
+
+1575406353 source:c:\users\mojko\documents\github\2048\game.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"array.h"
+	"game.h"
+

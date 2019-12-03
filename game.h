@@ -1,4 +1,18 @@
+/**
+ * @defgroup game_h Game
+ *
+ * @brief The module is used to create the game 2048
+ *
+ * @author  Marut, Jesper Byström
+ * @since   2019-12-03
+ *
+ * @{
+ */
+
 #include <stdbool.h>
+
+#define BOARD_COLUMNS 4
+#define BOARD_ROWS 4
 
 #define GAME_H
 
@@ -84,9 +98,6 @@ void game_slide_down(void);
  */
 void game_slide_left(void);
 
-void game_print();
-
-
 /**
  * @brief Return true if the game is over (2048 reached or no moves left).
  *
@@ -102,3 +113,7 @@ void game_print();
 bool game_is_game_over(void);
 
 #endif
+
+/**
+ * @}
+ */
