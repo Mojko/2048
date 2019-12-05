@@ -1,7 +1,7 @@
 /**
  * @brief Implementation of the game.h
  *
- * @author  Marut, Jesper Byström
+ * @author  Marut, Jesper Bystrï¿½m
  * @since   2019-12-03
  *
  */
@@ -103,7 +103,12 @@ int game_get_square(int row, int column)
 /**
  * @brief Slides the tiles in a direction based off of the map's coordinates
  *
- * The function takes in a map of coordinates which will be used to set the tile at a position specified by the map
+ * This functions takes in a map of coordinates which will de decided
+ * depedning on what move the user wants to do. It looks for a value in the
+ * field. When a value is found it will look on the opposite direction
+ * of the move and look for another value. If a target is found it will
+ * combine the values otherwise it will push the value to the furthest
+ * available spot in the direction desired.
  *
  * @param map the map of coordinates to walk in
  * @return -
@@ -239,4 +244,3 @@ bool game_is_game_over(void)
 
     return game_over;
 }
-
