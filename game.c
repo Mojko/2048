@@ -1,7 +1,8 @@
 /**
  * @brief Implementation of the game.h
  *
- * @author  Marut Khrutanang, Jesper Byström
+ * @author  Marut Khrutanang (dv19mkg)
+ * @author  Jesper Byström (dv19jbm)
  * @since   2019-11-29
  *
  */

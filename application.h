@@ -3,7 +3,8 @@
  *
  * @brief The application module
  *
- * @author  Marut Khrutanang, Jesper Byström
+ * @author  Marut Khrutanang (dv19mkg)
+ * @author  Jesper Byström (dv19jbm)
  * @since   2019-11-29
  *
  * @{
