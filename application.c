@@ -6,7 +6,9 @@
  *
  */
 
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <math.h>
 #include "application.h"
 
@@ -23,17 +25,21 @@ void app_run(void)
 
     game_new();
 
-    print_game();
-
     int selection;
 
     do
     {
-        print_menu();
+        print_game();
 
-        scanf("%d", &selection);
+        do
+        {
+            print_menu();
 
-        printf("\n");
+            scanf("%d", &selection);
+
+            printf("\n");
+
+        } while(selection > 4 || selection < 1);
 
         if(selection == 1)
         {
@@ -58,12 +64,6 @@ void app_run(void)
             printf("> Sliding left ...\n");
             game_slide_left();
         }
-        else
-        {
-            continue;
-        }
-
-        print_game();
 
     } while(selection != 0 && !game_is_game_over());
 
@@ -148,7 +148,8 @@ static void print_header_line()
         printf("+--------");
     }
 
-    printf("+\n");
+    printf("+");
+    printf("\n");
 }
 
 /**

@@ -4,7 +4,7 @@
  * @brief The module is used to create the game 2048
  *
  * @author  Marut Khrutanang, Jesper Byström
- * @since   2019-12-03
+ * @since   2019-11-29
  *
  * @{
  */
