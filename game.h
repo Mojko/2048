@@ -3,32 +3,31 @@
  *
  * @brief The module is used to create the game 2048
  *
- * @author  Marut, Jesper Byström
+ * @author  Marut Khrutanang, Jesper Byström
  * @since   2019-12-03
  *
  * @{
  */
 
+#ifndef GAME_H
+#define GAME_H
+
 #include <stdbool.h>
 
 #define BOARD_COLUMNS 4
 #define BOARD_ROWS 4
-
-#define GAME_H
-
-#ifdef GAME_H
-
+#define GOAL 2048
 
 /**
  * @brief Start a new game.
  *
- * This function will start by creating a dynamiccaly allocated array.
+ * This function will start by creating a dynamically allocated array.
  * Than this function will randomize two numbers that will be put out on the board
- * at the start of a new game. It will be beetween 4 and 2 90% chance that
+ * at the start of a new game. It will be between 4 and 2 90% chance that
  * one of the start values is 2 and 10% chance that it becomes a 4.
  *
- * @param void
- * @return void
+ * @param -
+ * @return -
  */
 void game_new(void);
 
@@ -54,8 +53,8 @@ int game_get_square(int row, int column);
  * are of the same number they will be combined to one value which will be the
  * sum of the two values together.
  *
- * @param void
- * @return void
+ * @param -
+ * @return -
  */
 void game_slide_up(void);
 
@@ -67,8 +66,8 @@ void game_slide_up(void);
  * are of the same number they will be combined to one value which will be the
  * sum of the two values together.
  *
- * @param void
- * @return void
+ * @param -
+ * @return -
  */
 void game_slide_right(void);
 
@@ -80,8 +79,8 @@ void game_slide_right(void);
  * are of the same number they will be combined to one value which will be the
  * sum of the two values together.
  *
- * @param void
- * @return void
+ * @param -
+ * @return -
  */
 void game_slide_down(void);
 
@@ -93,8 +92,8 @@ void game_slide_down(void);
  * are of the same number they will be combined to one value which will be the
  * sum of the two values together.
  *
- * @param void
- * @return void
+ * @param -
+ * @return -
  */
 void game_slide_left(void);
 
@@ -107,7 +106,7 @@ void game_slide_left(void);
  * reaching 2048 which is the max value, if the number is reached the user win
  * and the game is over.
  *
- * @param void
+ * @param -
  * @return bool, true if the game is over false if otherwise.
  */
 bool game_is_game_over(void);

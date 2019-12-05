@@ -1,8 +1,8 @@
 /**
  * @brief Implementation of the game.h
  *
- * @author  Marut, Jesper Bystr�m
- * @since   2019-12-03
+ * @author  Marut Khrutanang, Jesper Byström
+ * @since   2019-11-29
  *
  */
 
@@ -13,15 +13,21 @@
 #include "array.h"
 #include "game.h"
 
+static bool is_board_full(void);
 static int randomize_tile_value(void);
 static void spawn_random_tile(void);
-static bool is_board_full(void);
 static void slide_by_map(int c[BOARD_ROWS][BOARD_COLUMNS][2]);
+static bool check_neighbours(int row, int column);
 
 static Array *field;
 
 void game_new(void)
 {
+    if(field != NULL)
+    {
+        array_destroy(field);
+    }
+
     field = array_create(BOARD_ROWS, BOARD_COLUMNS);
 
     for(int i = 0; i < 2; i++)
@@ -72,7 +78,7 @@ static int randomize_tile_value(void)
 static void spawn_random_tile(void)
 {
     int index = 0;
-    int array[16][2];
+    int array[BOARD_COLUMNS * BOARD_ROWS][2];
 
     for(int i = 0; i < array_rows(field); i++)
     {
@@ -103,10 +109,10 @@ int game_get_square(int row, int column)
 /**
  * @brief Slides the tiles in a direction based off of the map's coordinates
  *
- * This functions takes in a map of coordinates which will de decided
- * depedning on what move the user wants to do. It looks for a value in the
- * field. When a value is found it will look on the opposite direction
- * of the move and look for another value. If a target is found it will
+ * This function takes in a map of coordinates which will be decided
+ * depending on what move the user wants to do. It looks for a value through
+ * the map. When a value is found it will look in the opposite direction
+ * and look for another value. If a target is found it will
  * combine the values otherwise it will push the value to the furthest
  * available spot in the direction desired.
  *
@@ -115,11 +121,12 @@ int game_get_square(int row, int column)
  */
 static void slide_by_map(int map[BOARD_ROWS][BOARD_COLUMNS][2])
 {
+    int current_value = 0;
     for(int i = 0; i < array_rows(field); i++)
     {
         for(int j = 0; j < array_columns(field); j++)
         {
-            int current_value = game_get_square(map[i][j][0], map[i][j][1]);
+            current_value = game_get_square(map[i][j][0], map[i][j][1]);
 
             if(current_value != 0)
             {
@@ -156,52 +163,96 @@ static void slide_by_map(int map[BOARD_ROWS][BOARD_COLUMNS][2])
 
 void game_slide_up(void)
 {
-    int map[BOARD_ROWS][BOARD_COLUMNS][2] =
+    int map[BOARD_ROWS][BOARD_COLUMNS][2];
+
+    for(int i =  0; i < BOARD_ROWS; i++)
     {
+        for(int j =  0; j < BOARD_COLUMNS; j++)
+        {
+            map[i][j][0] = i;
+            map[i][j][1] = j;
+        }
+    }
+
+    /*
+        4x4 up map example
         {{0, 0}, {0, 1}, {0, 2}, {0, 3}},
         {{1, 0}, {1, 1}, {1, 2}, {1, 3}},
         {{2, 0}, {2, 1}, {2, 2}, {2, 3}},
         {{3, 0}, {3, 1}, {3, 2}, {3, 3}},
-    };
+    */
 
     slide_by_map(map);
 }
 
 void game_slide_right(void)
 {
-    int map[BOARD_ROWS][BOARD_COLUMNS][2] =
+    int map[BOARD_ROWS][BOARD_COLUMNS][2];
+
+    for(int i =  0; i < BOARD_ROWS; i++)
     {
+        for(int j =  0; j < BOARD_COLUMNS; j++)
+        {
+            map[i][j][0] = BOARD_COLUMNS - 1 - j;
+            map[i][j][1] = BOARD_ROWS - 1 - i;
+        }
+    }
+
+    /*
+        4x4 right map example
         {{3, 3}, {2, 3}, {1, 3}, {0, 3}},
         {{3, 2}, {2, 2}, {1, 2}, {0, 2}},
         {{3, 1}, {2, 1}, {1, 1}, {0, 1}},
         {{3, 0}, {2, 0}, {1, 0}, {0, 0}},
-    };
+    */
 
     slide_by_map(map);
 }
 
 void game_slide_down(void)
 {
-    int map[BOARD_ROWS][BOARD_COLUMNS][2] =
+    int map[BOARD_ROWS][BOARD_COLUMNS][2];
+
+    for(int i =  0; i < BOARD_ROWS; i++)
     {
+        for(int j =  0; j < BOARD_COLUMNS; j++)
+        {
+            map[i][j][0] = BOARD_COLUMNS - 1 - i;
+            map[i][j][1] = BOARD_ROWS - 1 - j;
+        }
+    }
+
+    /*
+        4x4 down map example
         {{3, 3}, {3, 2}, {3, 1}, {3, 0}},
         {{2, 3}, {2, 2}, {2, 1}, {2, 0}},
         {{1, 3}, {1, 2}, {1, 1}, {1, 0}},
         {{0, 3}, {0, 2}, {0, 1}, {0, 0}},
-    };
+    */
 
     slide_by_map(map);
 }
 
 void game_slide_left(void)
 {
-    int map[BOARD_ROWS][BOARD_COLUMNS][2] =
+    int map[BOARD_ROWS][BOARD_COLUMNS][2];
+
+    for(int i =  0; i < BOARD_ROWS; i++)
     {
+        for(int j =  0; j < BOARD_COLUMNS; j++)
+        {
+            map[i][j][0] = j;
+            map[i][j][1] = i;
+        }
+    }
+
+    /*
+        4x4 left map example
         {{0, 0}, {1, 0}, {2, 0}, {3, 0}},
         {{0, 1}, {1, 1}, {2, 1}, {3, 1}},
         {{0, 2}, {1, 2}, {2, 2}, {3, 2}},
         {{0, 3}, {1, 3}, {2, 3}, {3, 3}},
-    };
+    */
 
     slide_by_map(map);
 }
@@ -212,7 +263,7 @@ bool game_is_game_over(void)
     {
         for(int j = 0; j < array_columns(field); j++)
         {
-            if(game_get_square(i, j) == 2048)
+            if(game_get_square(i, j) == GOAL)
             {
                 return true;
             }
@@ -226,16 +277,11 @@ bool game_is_game_over(void)
 
     bool game_over = true;
 
-    for(int i = 1; i < array_rows(field) - 1; i++)
+    for(int i = 0; i < array_rows(field); i++)
     {
-        for(int j = 1; j < array_columns(field) - 1; j++)
+        for(int j = 0; j < array_columns(field); j++)
         {
-            //If the tile (i,j) return 2048, the game is over, or if there are no neighbours left with the same value as (i,j)
-            int value = game_get_square(i, j);
-            if(game_get_square(i-1, j) == value ||
-                game_get_square(i+1, j) == value ||
-                game_get_square(i, j+1) == value ||
-                game_get_square(i, j-1) == value)
+            if(check_neighbours(i, j))
             {
                 game_over = false;
             }
@@ -243,4 +289,29 @@ bool game_is_game_over(void)
     }
 
     return game_over;
+}
+
+static bool check_neighbours(int row, int column)
+{
+    int directions[4][2] = {{-1, 0}, {0, -1}, {0, 1}, {1, 0}};
+
+    int neighbourR, neighbourC;
+
+    for(int i = 0; i < 4; i++)
+    {
+        neighbourR = row + directions[i][0];
+        neighbourC = column + directions[i][1];
+
+        if(neighbourR >= array_rows(field) || neighbourR < 0 || neighbourC >= array_columns(field) || neighbourC < 0)
+        {
+            continue;
+        }
+
+        if(game_get_square(neighbourR, neighbourC) == game_get_square(row, column))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

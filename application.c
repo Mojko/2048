@@ -13,12 +13,14 @@
 static int get_score();
 static void print_game();
 static void print_header_line();
-static void print_content(int box1, int box2, int box3, int box4);
+static void print_content(int boxes[]);
 static void print_empty_content_line();
 static void print_menu();
 
 void app_run(void)
 {
+    srand(time(0));
+
     game_new();
 
     print_game();
@@ -117,7 +119,15 @@ static void print_game()
     {
         print_header_line();
         print_empty_content_line();
-        print_content(game_get_square(i, 0), game_get_square(i, 1), game_get_square(i, 2), game_get_square(i, 3));
+
+        int boxes[BOARD_COLUMNS];
+
+        for(int j = 0; j < BOARD_COLUMNS; j++)
+        {
+            boxes[j] = game_get_square(i, j);
+        }
+
+        print_content(boxes);
         print_empty_content_line();
     }
 
@@ -169,10 +179,8 @@ static void print_empty_content_line()
  * @return -
  */
 
-static void print_content(int box1, int box2, int box3, int box4)
+static void print_content(int boxes[])
 {
-    int boxes[] = {box1, box2, box3, box4};
-
     for(int i = 0; i < BOARD_COLUMNS; i++)
     {
         if(boxes[i] == 0)
