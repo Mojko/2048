@@ -1,8 +1,8 @@
 /**
  * @brief Implementation of the game.h
  *
- * @author  Marut, Jesper Byström
- * @since   2019-12-03
+ * @author  Marut Khrutanang, Jesper Byström
+ * @since   2019-11-29
  *
  */
 
@@ -22,6 +22,11 @@ static Array *field;
 
 void game_new(void)
 {
+    if(field != NULL)
+    {
+        array_destroy(field);
+    }
+
     field = array_create(BOARD_ROWS, BOARD_COLUMNS);
 
     for(int i = 0; i < 2; i++)

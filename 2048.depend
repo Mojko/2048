@@ -47,12 +47,12 @@
 
 1575023716 c:\users\mojko\documents\github\2048\array.h
 
-1575136228 source:c:\users\mojko\documents\github\2048\main.c
+1575545937 source:c:\users\mojko\documents\github\2048\main.c
 	<stdio.h>
 	<stdlib.h>
 	"application.h"
 
-1575406353 source:c:\users\mojko\documents\github\2048\game.c
+1575546372 source:c:\users\mojko\documents\github\2048\game.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
